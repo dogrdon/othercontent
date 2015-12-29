@@ -10,7 +10,7 @@ require 'mongo'
 require 'optparse'
 
 BROPTIONS = {:js_errors => false}
-TEST_BASE = 'http://www.nydailynews.com'
+TEST_BASE = 'http://www.nbcnews.com/news/us-news/dartmouth-swimmer-tate-ramsden-dies-during-underwater-practice-n487191'
 
 
 Capybara.register_driver :poltergeist do |app|
@@ -23,6 +23,7 @@ session.visit TEST_BASE
 
 doc = Nokogiri::HTML(session.html)
 
-links = doc.css('div.teaser p a').map{ |l| l['href'] }[0..5]
+#links = doc.css('div.teaser p a').map{ |l| l['href'] }[0..5]
+
 
 puts links
