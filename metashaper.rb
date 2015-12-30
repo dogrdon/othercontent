@@ -9,20 +9,19 @@ paid content
 require 'csv'
 require 'json'
 
-META_FILE = './meta/pilot_sites.csv'
+META_CSV  = './meta/pilot_sites.csv'
+META_JSON = './meta/meta.json'
 
 #helpers up here
-
-#TODO deal with the chaining of paths
 
 def process_field(field)
 	if field == nil
 		''
 	elsif field.start_with?('[')
 		field[0] = field[-1] = ''
-		field.split(',')
+		field.split(',').map{|i| i.strip()}
 	else
-		field
+		field.strip()
 	end
 end
 
@@ -30,9 +29,15 @@ def make_json(data)
 	data.map { |o| Hash[o.each_pair.to_a] }.to_json
 end
 
+=begin
+#could just do:
+d = CSV.table(META_CSV)
+j = d.map{|r| r.to_hash}
+=end
+
 data = []
-#loop through here
-CSV.foreach(META_FILE, headers:true) do |r|
+
+CSV.foreach(META_CSV, headers:true) do |r|
 	site = process_field r['site']
 	provider = process_field r['farm']
 	articles_path = process_field r['articles_selector']
@@ -51,7 +56,17 @@ CSV.foreach(META_FILE, headers:true) do |r|
 		:img => img_path
 	}
 
-	data << entry
+	if entry[:c_path] != ''
+		data << entry
+	end
 end
 
-puts make_json(data)
+File.open(META_JSON, 'w') do |f|
+	f.puts JSON.pretty_generate(data)
+end
+
+
+
+
+
+

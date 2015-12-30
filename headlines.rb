@@ -8,22 +8,39 @@ require 'nokogiri'
 require 'capybara/poltergeist'
 require 'mongo'
 require 'optparse'
+require 'json'
 
-BROPTIONS = {:js_errors => false}
-TEST_BASE = 'http://www.nbcnews.com/news/us-news/dartmouth-swimmer-tate-ramsden-dies-during-underwater-practice-n487191'
+BROPTIONS = {:js_errors => false, :timeout => 60}
+META_JSON = './meta/meta.json'
 
+site_data = JSON.parse(IO.read(META_JSON))
 
 Capybara.register_driver :poltergeist do |app|
 	Capybara::Poltergeist::Driver.new(app, BROPTIONS)
 end
 
-session = Capybara::Session.new(:poltergeist)
-
-session.visit TEST_BASE
-
-doc = Nokogiri::HTML(session.html)
-
-#links = doc.css('div.teaser p a').map{ |l| l['href'] }[0..5]
-
-
-puts links
+site_data.each do |e|
+	session = Capybara::Session.new(:poltergeist)
+	start = e['site']
+	article_path = e['a_path']
+	content_path = e['c_path']
+	#this is where we need to check with what grabs what we need
+	hl = e['hl']
+	link = e['link']
+	img = e['img']
+	session.visit start
+	doc = Nokogiri::HTML(session.html)
+	articles = doc.css(article_path).map{ |l| l['href'] }[0..5]
+	articles.each do |a|
+		puts "grabbing #{a}"
+		session.visit a
+		a_doc = Nokogiri::HTML(session.html)
+		content = a_doc.css(content_path)
+		#content.foreach do |c|
+			#this is not right but it's pseudo right for now
+		#	h = c.css(hl)
+		#	l = c.css(link)
+		#	i = c.css(img)
+		puts content
+	end
+end
