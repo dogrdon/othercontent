@@ -15,13 +15,18 @@ META_JSON = './meta/meta.json'
 #helpers up here
 
 def process_field(field)
+	url_pattern = /https?:\/\/[\S]+/
 	if field == nil
 		''
 	elsif field.start_with?('[')
 		field[0] = field[-1] = ''
 		field.split(',').map{|i| i.strip()}
 	else
-		field.strip()
+		if field !~ url_pattern
+			[field.strip()]
+		else
+			field.strip()
+		end
 	end
 end
 

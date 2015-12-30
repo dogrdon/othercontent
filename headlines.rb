@@ -37,7 +37,7 @@ site_data.each do |e|
 		a_doc = Nokogiri::HTML(session.html)
 		content = a_doc.css(content_path)
 		#content.foreach do |c|
-			#this is not right but it's pseudo right for now
+		#	this is not right but it's pseudo right for now
 		#	h = c.css(hl)
 		#	l = c.css(link)
 		#	i = c.css(img)

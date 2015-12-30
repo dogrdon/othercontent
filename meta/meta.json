@@ -1,25 +1,45 @@
 [
   {
     "site": "http://bleacherreport.com",
-    "provider": "outbrain",
-    "a_path": "div.trendingArticles ol li div.articleContent a",
-    "c_path": "ul.ob-widget-items-container li a",
-    "hl": "span.ob-rec-text [title]",
-    "link": [
-      "href"
+    "provider": [
+      "outbrain"
     ],
-    "img": "$ img.ob-rec-image[src]"
+    "a_path": [
+      "div.trendingArticles ol li div.articleContent a"
+    ],
+    "c_path": [
+      "ul.ob-widget-items-container li a"
+    ],
+    "hl": [
+      "span.ob-rec-text !title"
+    ],
+    "link": [
+      "!href"
+    ],
+    "img": [
+      "img.ob-rec-image !src"
+    ]
   },
   {
     "site": "http://nydailynews.com",
-    "provider": "outbrain",
-    "a_path": "div.teaser p a",
-    "c_path": "ul.ob-widget-items-container li a",
-    "hl": "span.ob-rec-text [title]",
-    "link": [
-      "href"
+    "provider": [
+      "outbrain"
     ],
-    "img": "$ img.ob-rec-image[src]"
+    "a_path": [
+      "div.teaser p a"
+    ],
+    "c_path": [
+      "ul.ob-widget-items-container li a"
+    ],
+    "hl": [
+      "span.ob-rec-text !title"
+    ],
+    "link": [
+      "!href"
+    ],
+    "img": [
+      "img.ob-rec-image !src"
+    ]
   },
   {
     "site": "http://tmz.com",
@@ -27,43 +47,49 @@
       "outbrain",
       "taboola"
     ],
-    "a_path": "div.featured-stories-widget li.story figcaption a",
+    "a_path": [
+      "div.featured-stories-widget li.story figcaption a"
+    ],
     "c_path": [
       "div.trc_rbox_container div[data-item-syndicated=\"true\"]",
       "ul.ob-widget-items-container li a]"
     ],
     "hl": [
-      "a.item-label-href [title]",
-      "span.ob-rec-text [title]"
+      "a.item-label-href !title",
+      "span.ob-rec-text !title"
     ],
     "link": [
-      "a.item-label-href [href]",
-      "[href]"
+      "a.item-label-href !href",
+      "!href"
     ],
     "img": [
-      "$[data-item-thumb].value",
-      "$ img.ob-rec-image[src]"
+      "!data-item-thumb",
+      "img.ob-rec-image !src"
     ]
   },
   {
     "site": "http://examiner.com",
-    "provider": "taboola",
-    "a_path": "div#ex_taxonomy--ex_taxonomy_popular_articles_global ul li a",
+    "provider": [
+      "taboola"
+    ],
+    "a_path": [
+      "div#ex_taxonomy--ex_taxonomy_popular_articles_global ul li a"
+    ],
     "c_path": [
       "div.trc_rbox_container div[data-item-syndicated=\"true\"]",
       "div.subzone div.nb div.ad"
     ],
     "hl": [
-      "a.item-label-href [title]",
-      "div.text a [text]"
+      "a.item-label-href !title",
+      "div.text a %text"
     ],
     "link": [
-      "a.item-label-href [href]",
-      "div.text a [href]"
+      "a.item-label-href !href",
+      "div.text a !href"
     ],
     "img": [
-      "$[data-item-thumb].value",
-      "div.image a img[src]"
+      "!data-item-thumb",
+      "div.image a img !src"
     ]
   },
   {
@@ -72,19 +98,39 @@
       "taboola",
       "adblade"
     ],
-    "a_path": "section#top-stories-section div.dycontent div.panel a",
-    "c_path": "div.trc_rbox_container div[data-item-syndicated=\"true\"]",
-    "hl": "a.item-label-href [title]",
-    "link": "a.item-label-href [href]",
-    "img": "$[data-item-thumb].value"
+    "a_path": [
+      "section#top-stories-section div.dycontent div.panel a"
+    ],
+    "c_path": [
+      "div.trc_rbox_container div[data-item-syndicated=\"true\"]"
+    ],
+    "hl": [
+      "a.item-label-href !title"
+    ],
+    "link": [
+      "a.item-label-href !href"
+    ],
+    "img": [
+      "!data-item-thumb"
+    ]
   },
   {
     "site": "http://theblaze.com",
-    "provider": "taboola",
-    "a_path": "ul#tblz_ps_tab_popular a.tblz_ps_title",
-    "c_path": "div.trc_rbox_container div[data-item-syndicated=\"true\"]",
-    "hl": "a.item-label-href [title]",
-    "link": "a.item-label-href [href]",
+    "provider": [
+      "taboola"
+    ],
+    "a_path": [
+      "ul#tblz_ps_tab_popular a.tblz_ps_title"
+    ],
+    "c_path": [
+      "div.trc_rbox_container div[data-item-syndicated=\"true\"]"
+    ],
+    "hl": [
+      "a.item-label-href !title"
+    ],
+    "link": [
+      "a.item-label-href !href"
+    ],
     "img": ""
   }
 ]
