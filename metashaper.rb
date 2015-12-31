@@ -14,18 +14,19 @@ META_JSON = './meta/meta.json'
 
 #helpers up here
 
-def process_field(field)
+def process_field(data, sel)
 	url_pattern = /https?:\/\/[\S]+/
+	field = data[sel]
 	if field == nil
 		''
 	elsif field.start_with?('[')
 		field[0] = field[-1] = ''
 		field.split(',').map{|i| i.strip()}
 	else
-		if field !~ url_pattern
-			[field.strip()]
-		else
+		if sel == 'site' || sel == 'articles_selector'
 			field.strip()
+		else
+			[field.strip()]
 		end
 	end
 end
@@ -43,13 +44,13 @@ j = d.map{|r| r.to_hash}
 data = []
 
 CSV.foreach(META_CSV, headers:true) do |r|
-	site = process_field r['site']
-	provider = process_field r['farm']
-	articles_path = process_field r['articles_selector']
-	contents_path = process_field r['contents_selector']
-	hl_path = process_field r['content_hl']
-	link_path = process_field r['content_link']
-	img_path = process_field r['content_img']
+	site = process_field r, 'site'
+	provider = process_field r, 'farm'
+	articles_path = process_field r, 'articles_selector'
+	contents_path = process_field r, 'contents_selector' 
+	hl_path = process_field r, 'content_hl'
+	link_path = process_field r, 'content_link' 
+	img_path = process_field r, 'content_img'
 
 	entry = {
 		:site => site, 

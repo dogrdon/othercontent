@@ -4,9 +4,7 @@
     "provider": [
       "outbrain"
     ],
-    "a_path": [
-      "div.trendingArticles ol li div.articleContent a"
-    ],
+    "a_path": "div.trendingArticles ol li div.articleContent a",
     "c_path": [
       "ul.ob-widget-items-container li a"
     ],
@@ -25,9 +23,7 @@
     "provider": [
       "outbrain"
     ],
-    "a_path": [
-      "div.teaser p a"
-    ],
+    "a_path": "div.teaser p a",
     "c_path": [
       "ul.ob-widget-items-container li a"
     ],
@@ -47,9 +43,7 @@
       "outbrain",
       "taboola"
     ],
-    "a_path": [
-      "div.featured-stories-widget li.story figcaption a"
-    ],
+    "a_path": "div.featured-stories-widget li.story figcaption a",
     "c_path": [
       "div.trc_rbox_container div[data-item-syndicated=\"true\"]",
       "ul.ob-widget-items-container li a]"
@@ -72,9 +66,7 @@
     "provider": [
       "taboola"
     ],
-    "a_path": [
-      "div#ex_taxonomy--ex_taxonomy_popular_articles_global ul li a"
-    ],
+    "a_path": "div#ex_taxonomy--ex_taxonomy_popular_articles_global ul li a",
     "c_path": [
       "div.trc_rbox_container div[data-item-syndicated=\"true\"]",
       "div.subzone div.nb div.ad"
@@ -98,9 +90,7 @@
       "taboola",
       "adblade"
     ],
-    "a_path": [
-      "section#top-stories-section div.dycontent div.panel a"
-    ],
+    "a_path": "section#top-stories-section div.dycontent div.panel a",
     "c_path": [
       "div.trc_rbox_container div[data-item-syndicated=\"true\"]"
     ],
@@ -119,9 +109,7 @@
     "provider": [
       "taboola"
     ],
-    "a_path": [
-      "ul#tblz_ps_tab_popular a.tblz_ps_title"
-    ],
+    "a_path": "ul#tblz_ps_tab_popular a.tblz_ps_title",
     "c_path": [
       "div.trc_rbox_container div[data-item-syndicated=\"true\"]"
     ],
@@ -131,6 +119,8 @@
     "link": [
       "a.item-label-href !href"
     ],
-    "img": ""
+    "img": [
+      "!data-item-thumb"
+    ]
   }
 ]
