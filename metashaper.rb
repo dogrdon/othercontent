@@ -15,7 +15,6 @@ META_JSON = './meta/meta.json'
 #helpers up here
 
 def process_field(data, sel)
-	url_pattern = /https?:\/\/[\S]+/
 	field = data[sel]
 	if field == nil
 		''

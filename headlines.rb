@@ -74,6 +74,15 @@ def path_order (e)
 
 end
 
+def get_val(doc, mapper)
+
+	if mapper['sel']
+		val = doc.css(mapper['path'])[mapper['sel']]
+	elsif mapper['txt']
+		val = doc.css(mapper['path']).mapper['txt']
+	end
+end
+
 site_data.each do |e|
 	session = Capybara::Session.new(:poltergeist)
 	#TODO - outsource all this repetition to a function and return all the things - that's OOP?
@@ -84,7 +93,7 @@ site_data.each do |e|
 	session.visit start
 	
 	doc = Nokogiri::HTML(session.html)
-	articles = doc.css(article_path).map{ |l| l['href'] }[0..5]
+	articles = doc.css(article_path).map{ |l| l['href'] }[0..1] # this range can be inc, or low, for desired effect
 	articles.each do |a|
 		puts "grabbing #{a}"
 		session.visit a
@@ -95,10 +104,19 @@ site_data.each do |e|
 			img = res[0][:img]
 			content = a_doc.css(item[:path])
 			content.each do |c|
-				puts headline, link, img
+			
+				curr_link = get_val(c, link)
+				curr_hl = get_val(c, headline)
+				curr_img = get_val(c, img)
+
+				puts curr_link, curr_hl, curr_img
+				
+				#if all is correct, save it and move on
+
 			end
 		end	
-		#	this is not right but it's pseudo right for now
+
+
 		#	h = c.css(hl)
 		#	l = c.css(link)
 		#	i = c.css(img)
