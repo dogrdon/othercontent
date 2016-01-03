@@ -32,15 +32,15 @@ def path_format (f)
 	elsif f.include?('!') && !f.start_with?('!')
 		o = f.split('!')
 		hsh = {
-			:path => o[0],
-			:sel => o[1]
+			:path => o[0].strip(),
+			:sel => o[1].strip()
 		}
 		return hsh
 	elsif f.include?('%') && !f.start_with?('%')
 		o = f.split('%')
 		hsh = {
-			:path => o[0],
-			:txt => o[1]
+			:path => o[0].strip(),
+			:txt => o[1].strip()
 		}
 		return hsh
 	end
@@ -78,11 +78,22 @@ def path_order (e)
 end
 
 def get_val(doc, mapper)
-
-	if mapper['sel']
-		doc.css(mapper['path'])[mapper['sel']]
-	elsif mapper['txt']
-		doc.css(mapper['path']).mapper['txt']
+	if mapper.has_key?(:sel)
+		begin
+			v = doc.css(mapper[:path])[mapper[:sel]]
+		rescue Exception
+			v = "i don't know, something messed up: #{Exception}"
+		end
+		puts "VALUE IS: #{v}"
+		return v
+	elsif mapper.has_key?(:txt)
+		begin
+			v = doc.css(mapper[:path]).mapper[:txt]
+		rescue Exception
+			v = "i don't know, something messed up: #{Exception}"
+		end
+		puts "VALUE IS: #{v}"
+		return v
 	end
 end
 
@@ -118,26 +129,22 @@ site_data.each do |e|
 		a_doc = Nokogiri::HTML(session.html)
 		puts "WRITING RESULTS"
 		f1.puts "THIS IS THE RESULTS: #{res.class} == #{res}"
-		'''
-		res.each do |item| #what am i even doing here?
-			headline = item[0][:hl]
-			link = item[0][:link]
-			img = item[0][:img]
-			puts "TYPES ARE #{headline}:#{headline.class}, #{link}:#{link.class}, #{img}:#{img.class},"
+		res.each do |item|
+			headline = item[:hl]
+			link = item[:link]
+			img = item[:img]
 			content = a_doc.css(item[:path])
 			content.each do |c|
-			
-				#curr_link = get_val(c, link)
-				#curr_hl = get_val(c, headline)
-				#curr_img = get_val(c, img)
+				curr_link = get_val(c, link)
+				curr_hl = get_val(c, headline)
+				curr_img = get_val(c, img)
 
-				#puts "WE GOT HERE: #{curr_hl} -- #{curr_img}" 
-				puts "just me and the monkey!"
+				puts "WE GOT HERE: #{curr_hl} -- #{curr_img} -- #{curr_link}" 
 
 				#if all is correct, save it and move on
 
 			end
 		end	
-		'''
+		
 	end
 end
