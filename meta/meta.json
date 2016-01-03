@@ -90,7 +90,7 @@
       "taboola",
       "adblade"
     ],
-    "a_path": "section#top-stories-section div.dycontent div.panel a",
+    "a_path": "section#top-stories-section div.dycontent div.story-link_default a",
     "c_path": [
       "div.trc_rbox_container div[data-item-syndicated=\"true\"]"
     ],

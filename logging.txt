@@ -1,0 +1,30 @@
+DOMAIN: http://bleacherreport.com, ARTICLES: ["http://bleacherreport.com/articles/2604562-lsu-freshman-ben-simmons-has-referee-make-a-strong-pass-before-free-throw", "http://bleacherreport.com/articles/2604568-roger-federer-plays-with-giant-racquet-as-spongebob-squarepants-watches-on"]
+grabbing http://bleacherreport.com/articles/2604562-lsu-freshman-ben-simmons-has-referee-make-a-strong-pass-before-free-throw
+THIS IS THE RESULTS: Array == [{:path=>"ul.ob-widget-items-container li a", :hl=>{:path=>"span.ob-rec-text ", :sel=>"title"}, :img=>{:path=>"img.ob-rec-image ", :sel=>"src"}, :link=>nil}]
+grabbing http://bleacherreport.com/articles/2604568-roger-federer-plays-with-giant-racquet-as-spongebob-squarepants-watches-on
+THIS IS THE RESULTS: Array == [{:path=>"ul.ob-widget-items-container li a", :hl=>{:path=>"span.ob-rec-text ", :sel=>"title"}, :img=>{:path=>"img.ob-rec-image ", :sel=>"src"}, :link=>nil}]
+DOMAIN: http://nydailynews.com, ARTICLES: ["http://www.nydailynews.com/news/national/long-island-discrimination-case-vile-tweets-article-1.2483575", "http://www.nydailynews.com/news/national/militia-takes-ore-fed-building-protest-article-1.2483723"]
+grabbing http://www.nydailynews.com/news/national/long-island-discrimination-case-vile-tweets-article-1.2483575
+THIS IS THE RESULTS: Array == [{:path=>"ul.ob-widget-items-container li a", :hl=>{:path=>"span.ob-rec-text ", :sel=>"title"}, :img=>{:path=>"img.ob-rec-image ", :sel=>"src"}, :link=>nil}]
+grabbing http://www.nydailynews.com/news/national/militia-takes-ore-fed-building-protest-article-1.2483723
+THIS IS THE RESULTS: Array == [{:path=>"ul.ob-widget-items-container li a", :hl=>{:path=>"span.ob-rec-text ", :sel=>"title"}, :img=>{:path=>"img.ob-rec-image ", :sel=>"src"}, :link=>nil}]
+DOMAIN: http://tmz.com, ARTICLES: ["http://www.tmz.com/2016/01/01/natalie-cole-dead/", "http://www.tmz.com/2015/12/30/guess-whose-beachin-bod-see-the-leopard-print-lady/"]
+grabbing http://www.tmz.com/2016/01/01/natalie-cole-dead/
+THIS IS THE RESULTS: Array == ["div.trc_rbox_container div[data-item-syndicated=\"true\"]", "ul.ob-widget-items-container li a]"]
+grabbing http://www.tmz.com/2015/12/30/guess-whose-beachin-bod-see-the-leopard-print-lady/
+THIS IS THE RESULTS: Array == ["div.trc_rbox_container div[data-item-syndicated=\"true\"]", "ul.ob-widget-items-container li a]"]
+DOMAIN: http://examiner.com, ARTICLES: ["/article/15-year-old-dog-cries-as-owner-leaves-her-behind-and-walks-out-with-young-dog", "/article/carnival-ecstasy-death-video-taken-of-bloody-gruesome-scene-sparks-uproar"]
+grabbing http://examiner.com/article/15-year-old-dog-cries-as-owner-leaves-her-behind-and-walks-out-with-young-dog/article/carnival-ecstasy-death-video-taken-of-bloody-gruesome-scene-sparks-uproar
+THIS IS THE RESULTS: Array == ["div.trc_rbox_container div[data-item-syndicated=\"true\"]", "div.subzone div.nb div.ad"]
+grabbing http://examiner.com/article/15-year-old-dog-cries-as-owner-leaves-her-behind-and-walks-out-with-young-dog/article/carnival-ecstasy-death-video-taken-of-bloody-gruesome-scene-sparks-uproar
+THIS IS THE RESULTS: Array == ["div.trc_rbox_container div[data-item-syndicated=\"true\"]", "div.subzone div.nb div.ad"]
+DOMAIN: http://nbcnews.com, ARTICLES: ["/politics/politics-news/seven-rising-political-stars-watch-2016-n456676", "/politics/politics-news/seven-rising-political-stars-watch-2016-n456676"]
+grabbing http://nbcnews.com/politics/politics-news/seven-rising-political-stars-watch-2016-n456676/politics/politics-news/seven-rising-political-stars-watch-2016-n456676
+THIS IS THE RESULTS: Array == [{:path=>"div.trc_rbox_container div[data-item-syndicated=\"true\"]", :hl=>{:path=>"a.item-label-href ", :sel=>"title"}, :img=>nil, :link=>{:path=>"a.item-label-href ", :sel=>"href"}}]
+grabbing http://nbcnews.com/politics/politics-news/seven-rising-political-stars-watch-2016-n456676/politics/politics-news/seven-rising-political-stars-watch-2016-n456676
+THIS IS THE RESULTS: Array == [{:path=>"div.trc_rbox_container div[data-item-syndicated=\"true\"]", :hl=>{:path=>"a.item-label-href ", :sel=>"title"}, :img=>nil, :link=>{:path=>"a.item-label-href ", :sel=>"href"}}]
+DOMAIN: http://theblaze.com, ARTICLES: ["http://www.theblaze.com/stories/2016/01/01/obama-reveals-new-years-resolution-and-it-has-everything-to-do-with-guns/", "http://www.theblaze.com/stories/2016/01/01/meat-processig-plant-fires-nearly-200-muslim-works-over-prayer-dispute-and-cair-is-getting-involved/"]
+grabbing http://www.theblaze.com/stories/2016/01/01/obama-reveals-new-years-resolution-and-it-has-everything-to-do-with-guns/
+THIS IS THE RESULTS: Array == [{:path=>"div.trc_rbox_container div[data-item-syndicated=\"true\"]", :hl=>{:path=>"a.item-label-href ", :sel=>"title"}, :img=>nil, :link=>{:path=>"a.item-label-href ", :sel=>"href"}}]
+grabbing http://www.theblaze.com/stories/2016/01/01/meat-processig-plant-fires-nearly-200-muslim-works-over-prayer-dispute-and-cair-is-getting-involved/
+THIS IS THE RESULTS: Array == [{:path=>"div.trc_rbox_container div[data-item-syndicated=\"true\"]", :hl=>{:path=>"a.item-label-href ", :sel=>"title"}, :img=>nil, :link=>{:path=>"a.item-label-href ", :sel=>"href"}}]

@@ -77,11 +77,24 @@ end
 def get_val(doc, mapper)
 
 	if mapper['sel']
-		val = doc.css(mapper['path'])[mapper['sel']]
+		doc.css(mapper['path'])[mapper['sel']]
 	elsif mapper['txt']
-		val = doc.css(mapper['path']).mapper['txt']
+		doc.css(mapper['path']).mapper['txt']
 	end
 end
+
+def ensure_domain(f, domain, articles)
+	f.puts "DOMAIN: #{domain}, ARTICLES: #{articles}"
+	articles.map do |a|
+		if a.start_with?('/')
+			domain << a
+		else
+			a
+		end
+	end
+end
+
+f1 = File.open('./logging.txt', 'w')
 
 site_data.each do |e|
 	session = Capybara::Session.new(:poltergeist)
@@ -94,32 +107,34 @@ site_data.each do |e|
 	
 	doc = Nokogiri::HTML(session.html)
 	articles = doc.css(article_path).map{ |l| l['href'] }[0..1] # this range can be inc, or low, for desired effect
+	articles = ensure_domain(f1, start, articles)
 	articles.each do |a|
-		puts "grabbing #{a}"
+		puts "WRITING ADDRESS"
+		f1.puts "grabbing #{a}"
 		session.visit a
 		a_doc = Nokogiri::HTML(session.html)
-		res.each do |item|
-			headline = res[0][:hl]
-			link = res[0][:link]
-			img = res[0][:img]
+		puts "WRITING RESULTS"
+		f1.puts "THIS IS THE RESULTS: #{res.class} == #{res}"
+		'''
+		res.each do |item| #what am i even doing here?
+			headline = item[0][:hl]
+			link = item[0][:link]
+			img = item[0][:img]
+			puts "TYPES ARE #{headline}:#{headline.class}, #{link}:#{link.class}, #{img}:#{img.class},"
 			content = a_doc.css(item[:path])
 			content.each do |c|
 			
-				curr_link = get_val(c, link)
-				curr_hl = get_val(c, headline)
-				curr_img = get_val(c, img)
+				#curr_link = get_val(c, link)
+				#curr_hl = get_val(c, headline)
+				#curr_img = get_val(c, img)
 
-				puts curr_link, curr_hl, curr_img
-				
+				#puts "WE GOT HERE: #{curr_hl} -- #{curr_img}" 
+				puts "just me and the monkey!"
+
 				#if all is correct, save it and move on
 
 			end
 		end	
-
-
-		#	h = c.css(hl)
-		#	l = c.css(link)
-		#	i = c.css(img)
-		
+		'''
 	end
 end
