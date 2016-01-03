@@ -20,6 +20,7 @@ Capybara.register_driver :poltergeist do |app|
 end
 
 def path_format (f)
+	f = f.strip()
 	if f.start_with?("!") || f.start_with?("%")
 		v = f[0]
 		f[0] = ""
@@ -27,20 +28,21 @@ def path_format (f)
 		hsh[:path] = ""
 		hsh[:sel] = f.strip() if v == '!'
 		hsh[:txt] = f.strip() if v == '%'
-		
-	elsif f.include?('!')
+		return hsh
+	elsif f.include?('!') && !f.start_with?('!')
 		o = f.split('!')
 		hsh = {
 			:path => o[0],
 			:sel => o[1]
 		}
-
-	elsif f.include?('%')
+		return hsh
+	elsif f.include?('%') && !f.start_with?('%')
 		o = f.split('%')
 		hsh = {
 			:path => o[0],
 			:txt => o[1]
 		}
+		return hsh
 	end
 end
 
@@ -61,6 +63,7 @@ def path_order (e)
 			}
 			data << entry
 		end
+		return data
 	else
 		entry = {
 			:path => c[0],
@@ -69,7 +72,7 @@ def path_order (e)
 			:link => path_format(l[0])
 		}
 		data << entry
-
+		return data
 	end
 
 end
@@ -101,7 +104,7 @@ site_data.each do |e|
 	#TODO - outsource all this repetition to a function and return all the things - that's OOP?
 	start = e['site']
 	article_path = e['a_path']
-	res = path_order e
+	res = path_order e #reach into each meta entry and sort out the arrayed paths
 	
 	session.visit start
 	
