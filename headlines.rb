@@ -78,21 +78,23 @@ def path_order (e)
 end
 
 def get_val(doc, mapper)
+	#TODO: this is not quite right, need to ensure it's extracting properly
+	#ASIDE: Nokogiri has some css parsing issues such as: https://github.com/sparklemotion/nokogiri/issues/581
 	if mapper.has_key?(:sel)
-		begin
-			v = doc.css(mapper[:path])[mapper[:sel]]
-		rescue Exception
-			v = "i don't know, something messed up: #{Exception}"
+		if mapper[:path] == ""
+			#v = doc[0][mapper[:sel]]
+			v = doc.attributes[mapper[:sel]].value #this may not work across the board
+		else
+			v = doc.css(mapper[:path])[0][mapper[:sel]]
 		end
-		puts "VALUE IS: #{v}"
 		return v
 	elsif mapper.has_key?(:txt)
-		begin
-			v = doc.css(mapper[:path]).mapper[:txt]
-		rescue Exception
-			v = "i don't know, something messed up: #{Exception}"
+		if mapper[:path] == ""
+			#v = doc[0].mapper[:txt]
+			v = "i don't even know what to do with this one :)"
+		else
+			v = doc.css(mapper[:path])[0].mapper[:txt]
 		end
-		puts "VALUE IS: #{v}"
 		return v
 	end
 end
@@ -130,10 +132,11 @@ site_data.each do |e|
 		puts "WRITING RESULTS"
 		f1.puts "THIS IS THE RESULTS: #{res.class} == #{res}"
 		res.each do |item|
+			cpath = item[:path]
 			headline = item[:hl]
 			link = item[:link]
 			img = item[:img]
-			content = a_doc.css(item[:path])
+			content = a_doc.css(cpath)
 			content.each do |c|
 				curr_link = get_val(c, link)
 				curr_hl = get_val(c, headline)
@@ -141,7 +144,7 @@ site_data.each do |e|
 
 				puts "WE GOT HERE: #{curr_hl} -- #{curr_img} -- #{curr_link}" 
 
-				#if all is correct, save it and move on
+				#when all is correct, eventually, save it and move on
 
 			end
 		end	
