@@ -10,7 +10,10 @@ require 'mongo'
 require 'optparse'
 require 'json'
 
-BROPTIONS = {:js_errors => false, :timeout => 60}
+BROPTIONS = {:js_errors => false, 
+						 :timeout => 120,
+						 :debug => true, 
+						 :phantomjs_options => ['--ignore-ssl-errors=false', '--load-images=false']}
 META_JSON = './meta/meta.json'
 
 site_data = JSON.parse(IO.read(META_JSON))
@@ -142,7 +145,9 @@ site_data.each do |e|
 				curr_hl = get_val(c, headline)
 				curr_img = get_val(c, img)
 
-				puts "WE GOT HERE: #{curr_hl} -- #{curr_img} -- #{curr_link}" 
+				File.open('results.csv', 'a') { |f|
+					f.puts "\"#{curr_hl}\", #{curr_img}, #{curr_link}\n"
+				}
 
 				#when all is correct, eventually, save it and move on
 
