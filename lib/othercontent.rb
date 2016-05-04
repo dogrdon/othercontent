@@ -145,7 +145,7 @@ site_data.each do |e|
 				curr_hl = get_val(c, headline)
 				curr_img = get_val(c, img)
 
-				File.open('results.csv', 'a') { |f|
+				File.open('../data/results.csv', 'a') { |f|
 					f.puts "\"#{curr_hl}\", #{curr_img}, #{curr_link}\n"
 				}
 
