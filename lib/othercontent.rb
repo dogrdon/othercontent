@@ -11,9 +11,9 @@ require 'optparse'
 require 'json'
 
 BROPTIONS = {:js_errors => false, 
-						 :timeout => 120,
-						 :debug => true, 
-						 :phantomjs_options => ['--ignore-ssl-errors=false', '--load-images=false']}
+	     :timeout => 120,
+	     :debug => true, 
+	     :phantomjs_options => ['--ignore-ssl-errors=false', '--load-images=false']}
 META_JSON = './meta/meta.json'
 
 site_data = JSON.parse(IO.read(META_JSON))
