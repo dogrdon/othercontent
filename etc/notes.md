@@ -40,6 +40,9 @@ A meandering look into the makeup of clickbait content providers on the web. Con
 
 **revcontent**
 
+>> ugh, image html looks like this: 
+`<div class="rc-photo" style="background-image: url(&quot;//img.revcontent.com/?url=https://revcontent-production.s3.amazonaws.com/content/images/1461875891.jpg&amp;static=true&amp;pos=face&amp;h=315&amp;w=420&amp;static=true&quot;); height: 231px;">  </div>`
+
 * ~ibtimes.com~ - not as interesting, only links to other ibtimes content
 * ~dailycooking.com~ - only on homepage and only links back to revcontent service
 * tpnn.com - yeah, lots of crap here.
