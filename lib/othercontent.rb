@@ -10,6 +10,7 @@ require 'mongo'
 require 'optparse'
 require 'json'
 require 'cgi'
+require 'uri'
 
 BROPTIONS = {:js_errors => false, 
 	     :timeout => 120,
@@ -24,7 +25,7 @@ Capybara.register_driver :poltergeist do |app|
 end
 
 def revcontent_background_img(i)
-	return CGI::parse(i[/\((.*?)\)/m, 1])["\"//img.revcontent.com/?url"][0]
+	return CGI::parse(i[/\((.*?)\)/m, 1])["http://img.revcontent.com/?url"][0]
 end
 
 def path_format (f)
@@ -121,8 +122,8 @@ end
 def ensure_domain(f, domain, articles)
 	f.puts "DOMAIN: #{domain}, ARTICLES: #{articles}"
 	articles.map do |a|
-		if a.start_with?('/')
-			domain << a
+		unless a.include?(domain)
+			URI.join(domain, a).to_s
 		else
 			a
 		end
