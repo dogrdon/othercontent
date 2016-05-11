@@ -3,7 +3,7 @@
 =begin
 grab the metadata csv and make a json file for traversing all these
 different configurations of how a site might position their 
-paid content
+paid, recommended content
 =end
 
 require 'csv'

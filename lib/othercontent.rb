@@ -9,6 +9,7 @@ require 'capybara/poltergeist'
 require 'mongo'
 require 'optparse'
 require 'json'
+require 'cgi'
 
 BROPTIONS = {:js_errors => false, 
 	     :timeout => 120,
@@ -22,7 +23,14 @@ Capybara.register_driver :poltergeist do |app|
 	Capybara::Poltergeist::Driver.new(app, BROPTIONS)
 end
 
+def revcontent_background_img(i)
+	return CGI::parse(i[/\((.*?)\)/m, 1])["\"//img.revcontent.com/?url"][0]
+
 def path_format (f)
+	##
+	# 
+	# 
+	
 	f = f.strip()
 	if f.start_with?("!") || f.start_with?("%")
 		v = f[0]
@@ -50,6 +58,9 @@ def path_format (f)
 end
 
 def path_order (e)
+	##
+	# 
+	# 
 
 	c = e['c_path']
 	h = e['hl']
@@ -58,6 +69,7 @@ def path_order (e)
 	data = []
 	if c.length > 1
 		c.each_with_index do |v, ind|
+
 			entry = {
 				:path => c[ind],
 				:hl => path_format(h[ind]),
@@ -90,11 +102,13 @@ def get_val(doc, mapper)
 		else
 			v = doc.css(mapper[:path])[0][mapper[:sel]]
 		end
+		if v.include?('background-image') #if this is revcontent, need to extract image url from inline style
+			v = revcontent_background_img(v)
 		return v
 	elsif mapper.has_key?(:txt)
 		if mapper[:path] == ""
 			#v = doc[0].mapper[:txt]
-			v = "i don't even know what to do with this one :)"
+			v = "i don't even know what to do with this one :)" #should log this instead.
 		else
 			v = doc.css(mapper[:path])[0].mapper[:txt]
 		end
@@ -149,7 +163,7 @@ site_data.each do |e|
 					f.puts "\"#{curr_hl}\", #{curr_img}, #{curr_link}\n"
 				}
 
-				#when all is correct, eventually, save it and move on
+				#TODO - when all is correct, eventually, save it and move on
 
 			end
 		end	
