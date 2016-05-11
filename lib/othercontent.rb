@@ -25,6 +25,7 @@ end
 
 def revcontent_background_img(i)
 	return CGI::parse(i[/\((.*?)\)/m, 1])["\"//img.revcontent.com/?url"][0]
+end
 
 def path_format (f)
 	##
@@ -104,6 +105,7 @@ def get_val(doc, mapper)
 		end
 		if v.include?('background-image') #if this is revcontent, need to extract image url from inline style
 			v = revcontent_background_img(v)
+		end
 		return v
 	elsif mapper.has_key?(:txt)
 		if mapper[:path] == ""
@@ -159,7 +161,7 @@ site_data.each do |e|
 				curr_hl = get_val(c, headline)
 				curr_img = get_val(c, img)
 
-				File.open('../data/results.csv', 'a') { |f|
+				File.open('./data/results.csv', 'a') { |f|
 					f.puts "\"#{curr_hl}\", #{curr_img}, #{curr_link}\n"
 				}
 

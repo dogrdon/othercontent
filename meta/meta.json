@@ -122,5 +122,62 @@
     "img": [
       "!data-item-thumb"
     ]
+  },
+  {
+    "site": "http://tpnn.com",
+    "provider": [
+      "revcontent"
+    ],
+    "a_path": "section#be-must-read-widget-2 p.article a",
+    "c_path": [
+      "div.rc-row div.rc-item div.rc-item-wrapper"
+    ],
+    "hl": [
+      "a.rc-cta !title"
+    ],
+    "link": [
+      "a.rc-cta !href"
+    ],
+    "img": [
+      "div.rc-photo !style"
+    ]
+  },
+  {
+    "site": "http://redorbit.com",
+    "provider": [
+      "revcontent"
+    ],
+    "a_path": "ul.featured-posts-list li a",
+    "c_path": [
+      "div.rc-row div.rc-item div.rc-item-wrapper"
+    ],
+    "hl": [
+      "a.rc-cta !title"
+    ],
+    "link": [
+      "a.rc-cta !href"
+    ],
+    "img": [
+      "div.rc-photo !style"
+    ]
+  },
+  {
+    "site": "http://worldstarhiphop.com",
+    "provider": [
+      "revcontent"
+    ],
+    "a_path": "div.carousel div.slide a",
+    "c_path": [
+      "div.rc-row div.rc-item div.rc-item-wrapper"
+    ],
+    "hl": [
+      "a.rc-cta !title"
+    ],
+    "link": [
+      "a.rc-cta !href"
+    ],
+    "img": [
+      "div.rc-photo !style"
+    ]
   }
 ]
