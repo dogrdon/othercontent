@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 
 =begin
-getting the headlines that we'll use for inspiration
+main script for scraping websites using their paths to suggested content as 
+provided in `$APP_HOME/meta/meta.json`. Right now metashaper.rb has to be run
+manually on `$APP_HOME/meta/pilot_sites.csv` whenever that resource changes
 =end
 
 require_relative 'othercontent/store'
@@ -10,16 +12,11 @@ require ENV["HOME"]+'/othercontent/conf/mongo_conf'
 require 'nokogiri'
 require 'capybara/poltergeist'
 require 'mongo'
-require 'optparse'
 require 'json'
 require 'cgi'
-require 'uri'
-require 'httpclient'
+require 'net/http'
 
-BROPTIONS = {:js_errors => false, 
-	     :timeout => 120,
-	     :debug => true, 
-	     :phantomjs_options => ['--ignore-ssl-errors=false', '--load-images=false']}
+BROPTIONS = {:js_errors => false, :timeout => 120, :phantomjs_options => ['--ignore-ssl-errors=false', '--load-images=false']}
 META_JSON = './meta/meta.json'
 
 site_data = JSON.parse(IO.read(META_JSON))
@@ -109,9 +106,13 @@ def path_order (e)
 end
 
 def get_val(doc, mapper)
+	##
+	# This will retrieve the value for a path in HTML based on whether it's
+	# an attribute (:sel) or element text (:txt)
+	# THIS COULD USE SOME WORK
+
 	if mapper.has_key?(:sel)
 		if mapper[:path] == ""
-			#v = doc[0][mapper[:sel]]
 			v = doc.attributes[mapper[:sel]].value #this may not work across the board
 		else
 			v = doc.css(mapper[:path])[0][mapper[:sel]]
@@ -123,7 +124,7 @@ def get_val(doc, mapper)
 	elsif mapper.has_key?(:txt)
 		if mapper[:path] == ""
 			#v = doc[0].mapper[:txt]
-			v = "i don't even know what to do with this one :)" #should log this instead.
+			v = "PATH EMPTY, COULD NOT GET TEXT" #should log this instead.
 		else
 			v = doc.css(mapper[:path])[0].mapper[:txt]
 		end
@@ -131,8 +132,11 @@ def get_val(doc, mapper)
 	end
 end
 
-def ensure_domain(f, domain, articles)
-	f.puts "DOMAIN: #{domain}, ARTICLES: #{articles}"
+def ensure_domain(domain, articles)
+	##
+	# Some sites use relative links and so you don't get a full url scraping them
+	# This just makes sure that the relative links are expanded to full urls
+
 	articles.map do |a|
 		unless a.include?(domain)
 			URI.join(domain, a).to_s
@@ -145,20 +149,17 @@ end
 def get_target(url)
 	##
 	# Here we want to get the ultimate target for a link
-	# becaus there might be a lot of redirects
-	# CURRENTLY THIS IS NOT THE ANSWER
-	httpc = HTTPClient.new
-	res = httpc.get(url)
-	return resp.header['Location'] #there might be many redirects
+	# because there might be a lot of redirects
+	# might be a better way to do this with headers and not load the whole resource,
+	# but we won't suffer now for this
+
+	res = Net::HTTP.get_response(URI(url))
+	return res['location']
 
 end
 
-
-f1 = File.open('./logging.txt', 'w')
-
 site_data.each do |e|
 	session = Capybara::Session.new(:poltergeist)
-	#TODO - outsource all this repetition to a function and return all the things - that's OOP?
 	start = e['site']
 	article_path = e['a_path']
 	res = path_order e #reach into each meta entry and sort out the arrayed paths
@@ -166,15 +167,10 @@ site_data.each do |e|
 	session.visit start
 	
 	doc = Nokogiri::HTML(session.html)
-	articles = doc.css(article_path).map{ |l| l['href'] }[0..1] # this range can be inc, or low, for desired effect
-	articles = ensure_domain(f1, start, articles)
+	articles = ensure_domain(start, doc.css(article_path).map{ |l| l['href'] }[0..4]) # this range can be inc, or low, for desired effect
 	articles.each do |a|
-		puts "WRITING ADDRESS"
-		f1.puts "grabbing #{a}"
 		session.visit a
 		a_doc = Nokogiri::HTML(session.html)
-		puts "WRITING RESULTS"
-		f1.puts "THIS IS THE RESULTS: #{res.class} == #{res}"
 		res.each do |item|
 			cpath = item[:path]
 			headline = item[:hl]
@@ -182,7 +178,6 @@ site_data.each do |e|
 			img = item[:img]
 			content = a_doc.css(cpath)
 			content.each do |c|
-				#TODO more error checking on this
 				curr_location = a
 				curr_link = get_val(c, link)
 				curr_hl = get_val(c, headline)
@@ -191,15 +186,19 @@ site_data.each do |e|
 				if curr_link.start_with?('//') 
 					curr_link.prepend('http:')
 				end
+				curr_target = get_target(curr_link)
+
 				cdoc = {content_link:curr_link, 
 								content_text:curr_hl, 
 								content_img_src:curr_img, 
-								content_location:curr_location, 
-								datetime:access_time}
+								content_location:curr_location,
+								content_target:curr_target, 
+								accessed_at:access_time}
 				
 				#save it
 				begin
-					#TODO: don't save repeats, but we don't know what we want to check on yet
+					#TODO: eventually don't save repeats, but right now we want to see everything
+					#TODO: eventually save frequency of saved items (if repeats?) - maybe put this downstream
 					storage.insertdoc(cdoc)
 				rescue => error
 					puts "Something wrong happened when storing in db store: #{error}"
