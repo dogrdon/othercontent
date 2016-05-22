@@ -4,6 +4,9 @@
 getting the headlines that we'll use for inspiration
 =end
 
+require_relative 'othercontent/store'
+require ENV["HOME"]+'/othercontent/conf/mongo_conf'
+
 require 'nokogiri'
 require 'capybara/poltergeist'
 require 'mongo'
@@ -19,6 +22,11 @@ BROPTIONS = {:js_errors => false,
 META_JSON = './meta/meta.json'
 
 site_data = JSON.parse(IO.read(META_JSON))
+
+begin
+	storage = Store::MongoStore.new(MONGO_CONF[:host], MONGO_CONF[:port], MONGO_CONF[:database], MONGO_CONF[:collection])
+rescue => error
+	puts "Something wrong happened when connecting to db store, and it was: #{error}"
 
 Capybara.register_driver :poltergeist do |app|
 	Capybara::Poltergeist::Driver.new(app, BROPTIONS)
