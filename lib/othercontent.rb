@@ -14,6 +14,7 @@ require 'optparse'
 require 'json'
 require 'cgi'
 require 'uri'
+require 'httpclient'
 
 BROPTIONS = {:js_errors => false, 
 	     :timeout => 120,
@@ -26,7 +27,8 @@ site_data = JSON.parse(IO.read(META_JSON))
 begin
 	storage = Store::MongoStore.new(MONGO_CONF[:host], MONGO_CONF[:port], MONGO_CONF[:database], MONGO_CONF[:collection])
 rescue => error
-	puts "Something wrong happened when connecting to db store, and it was: #{error}"
+	puts "Something wrong happened when connecting to db store: #{error}"
+end
 
 Capybara.register_driver :poltergeist do |app|
 	Capybara::Poltergeist::Driver.new(app, BROPTIONS)
@@ -38,8 +40,10 @@ end
 
 def path_format (f)
 	##
-	# 
-	# 
+	# this function helps us determine where we get the path from the html
+	# ! and % are used as special characters to indicate whether this part of the
+	# path comes from the attribute of the element that follows, 
+	# or the text of the element that follows, respectively
 	
 	f = f.strip()
 	if f.start_with?("!") || f.start_with?("%")
@@ -69,8 +73,10 @@ end
 
 def path_order (e)
 	##
-	# 
-	# 
+	# this function is used if there are more than one provider,
+	# and which provider it is, for that set of context
+	# see $APP_HOME/meta/pilot_sites.csv for which 
+	# sites have multiples.
 
 	c = e['c_path']
 	h = e['hl']
@@ -103,8 +109,6 @@ def path_order (e)
 end
 
 def get_val(doc, mapper)
-	#TODO: this is not quite right, need to ensure it's extracting properly
-	#ASIDE: Nokogiri has some css parsing issues such as: https://github.com/sparklemotion/nokogiri/issues/581
 	if mapper.has_key?(:sel)
 		if mapper[:path] == ""
 			#v = doc[0][mapper[:sel]]
@@ -138,6 +142,18 @@ def ensure_domain(f, domain, articles)
 	end
 end
 
+def get_target(url)
+	##
+	# Here we want to get the ultimate target for a link
+	# becaus there might be a lot of redirects
+	# CURRENTLY THIS IS NOT THE ANSWER
+	httpc = HTTPClient.new
+	res = httpc.get(url)
+	return resp.header['Location'] #there might be many redirects
+
+end
+
+
 f1 = File.open('./logging.txt', 'w')
 
 site_data.each do |e|
@@ -166,18 +182,30 @@ site_data.each do |e|
 			img = item[:img]
 			content = a_doc.css(cpath)
 			content.each do |c|
+				#TODO more error checking on this
+				curr_location = a
 				curr_link = get_val(c, link)
 				curr_hl = get_val(c, headline)
 				curr_img = get_val(c, img)
-
-				File.open('./data/results.csv', 'a') { |f|
-					f.puts "\"#{curr_hl}\", #{curr_img}, #{curr_link}\n"
-				}
-
-				#TODO - when all is correct, eventually, save it and move on
-
+				access_time = Time.now
+				if curr_link.start_with?('//') 
+					curr_link.prepend('http:')
+				end
+				cdoc = {content_link:curr_link, 
+								content_text:curr_hl, 
+								content_img_src:curr_img, 
+								content_location:curr_location, 
+								datetime:access_time}
+				
+				#save it
+				begin
+					#TODO: don't save repeats, but we don't know what we want to check on yet
+					storage.insertdoc(cdoc)
+				rescue => error
+					puts "Something wrong happened when storing in db store: #{error}"
+				end
 			end
-		end	
-		
+		end			
 	end
 end
+
