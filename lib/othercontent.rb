@@ -16,6 +16,10 @@ require 'json'
 require 'cgi'
 require 'net/http'
 
+##
+# CONFIGURATION AND SET UP
+##
+
 BROPTIONS = {:js_errors => false, :timeout => 120, :phantomjs_options => ['--ignore-ssl-errors=false', '--load-images=false']}
 META_JSON = './meta/meta.json'
 
@@ -24,12 +28,21 @@ site_data = JSON.parse(IO.read(META_JSON))
 begin
 	storage = Store::MongoStore.new(MONGO_CONF[:host], MONGO_CONF[:port], MONGO_CONF[:database], MONGO_CONF[:collection])
 rescue => error
-	puts "Something wrong happened when connecting to db store: #{error}"
+	puts "OTHERCONTENT-ERROR: Something wrong happened when connecting to db store: #{error}"
 end
 
 Capybara.register_driver :poltergeist do |app|
 	Capybara::Poltergeist::Driver.new(app, BROPTIONS)
 end
+
+##
+# /CONFIGURATION AND SET UP
+##
+
+
+##
+# HELPER FUNCTIONS
+##
 
 def revcontent_background_img(i)
 	return CGI::parse(i[/\((.*?)\)/m, 1])["http://img.revcontent.com/?url"][0]
@@ -109,26 +122,34 @@ def get_val(doc, mapper)
 	##
 	# This will retrieve the value for a path in HTML based on whether it's
 	# an attribute (:sel) or element text (:txt)
-	# THIS COULD USE SOME WORK
 
 	if mapper.has_key?(:sel)
-		if mapper[:path] == ""
-			v = doc.attributes[mapper[:sel]].value #this may not work across the board
-		else
-			v = doc.css(mapper[:path])[0][mapper[:sel]]
+		begin	
+			if mapper[:path] == ""
+				v = doc.attributes[mapper[:sel]].value #this may not work across the board
+			else
+				v = doc.css(mapper[:path])[0][mapper[:sel]]
+			end
+			if v.include?('background-image') #if this is revcontent, need to extract image url from inline style
+				v = revcontent_background_img(v)
+			end
+			return v
+		rescue => error
+			puts "OTHERCONTENT-WARNING: sel path did not return anything: #{error}"
+			return nil
 		end
-		if v.include?('background-image') #if this is revcontent, need to extract image url from inline style
-			v = revcontent_background_img(v)
-		end
-		return v
 	elsif mapper.has_key?(:txt)
-		if mapper[:path] == ""
-			#v = doc[0].mapper[:txt]
-			v = "PATH EMPTY, COULD NOT GET TEXT" #should log this instead.
-		else
-			v = doc.css(mapper[:path])[0].mapper[:txt]
+		begin
+			if mapper[:path] == ""
+				v = doc[0].mapper[:txt]
+			else
+				v = doc.css(mapper[:path])[0].mapper[:txt]
+			end
+			return v
+		rescue => error
+			puts "OTHERCONTENT-WARNING: txt path did not return anything: #{error}"
+			return nil
 		end
-		return v
 	end
 end
 
@@ -155,8 +176,15 @@ def get_target(url)
 
 	res = Net::HTTP.get_response(URI(url))
 	return res['location']
-
 end
+
+##
+# /HELPER FUNCTIONS
+##
+
+##
+# MAIN PROCEDURE
+##
 
 site_data.each do |e|
 	session = Capybara::Session.new(:poltergeist)
@@ -167,7 +195,7 @@ site_data.each do |e|
 	session.visit start
 	
 	doc = Nokogiri::HTML(session.html)
-	articles = ensure_domain(start, doc.css(article_path).map{ |l| l['href'] }[0..4]) # this range can be inc, or low, for desired effect
+	articles = ensure_domain(start, doc.css(article_path).map{ |l| l['href'] }[0..3]) # this range can be inc, or low, for desired effect
 	articles.each do |a|
 		session.visit a
 		a_doc = Nokogiri::HTML(session.html)
@@ -188,12 +216,7 @@ site_data.each do |e|
 				end
 				curr_target = get_target(curr_link)
 
-				cdoc = {content_link:curr_link, 
-								content_text:curr_hl, 
-								content_img_src:curr_img, 
-								content_location:curr_location,
-								content_target:curr_target, 
-								accessed_at:access_time}
+				cdoc = {content_link:curr_link, content_text:curr_hl, content_img_src:curr_img, content_location:curr_location, content_target:curr_target, accessed_at:access_time}
 				
 				#save it
 				begin
@@ -201,7 +224,7 @@ site_data.each do |e|
 					#TODO: eventually save frequency of saved items (if repeats?) - maybe put this downstream
 					storage.insertdoc(cdoc)
 				rescue => error
-					puts "Something wrong happened when storing in db store: #{error}"
+					puts "OTHERCONTENT-ERROR: Something wrong happened when storing in db store: #{error}"
 				end
 			end
 		end			
