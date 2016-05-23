@@ -7,7 +7,7 @@ manually on `$APP_HOME/meta/pilot_sites.csv` whenever that resource changes
 =end
 
 require_relative 'othercontent/store'
-require ENV["HOME"]+'/othercontent/conf/mongo_conf'
+require ENV["HOME"]+'/othercontent/etc/conf/mongo_conf'
 
 require 'nokogiri'
 require 'capybara/poltergeist'
