@@ -229,5 +229,6 @@ site_data.each do |e|
 			end
 		end			
 	end
+    session.driver.quit
 end
 
