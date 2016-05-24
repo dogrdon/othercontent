@@ -21,7 +21,7 @@ require 'net/http'
 ##
 
 BROPTIONS = {:js_errors => false, :timeout => 120, :phantomjs_options => ['--ignore-ssl-errors=false', '--load-images=false']}
-META_JSON = './meta/meta.json'
+META_JSON = ENV["HOME"]+'/othercontent/meta/meta.json'
 
 site_data = JSON.parse(IO.read(META_JSON))
 
