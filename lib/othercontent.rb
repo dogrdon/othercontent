@@ -173,9 +173,13 @@ def get_target(url)
 	# because there might be a lot of redirects
 	# might be a better way to do this with headers and not load the whole resource,
 	# but we won't suffer now for this
-
-	res = Net::HTTP.get_response(URI(url))
-	return res['location']
+	begin
+		res = Net::HTTP.get_response(URI(url))
+		return res['location']
+	rescue => error
+		puts "ERROR: target resolution did not work for #{url}: #{error}"
+		return "NA"
+	end
 end
 
 ##
