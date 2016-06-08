@@ -20,13 +20,31 @@ require 'net/http'
 # CONFIGURATION AND SET UP
 ##
 
+if ARGV[0] == "test"
+	TEST = true
+else
+	TEST = false
+end
+
+
 BROPTIONS = {:js_errors => false, :timeout => 120, :phantomjs_options => ['--ignore-ssl-errors=false', '--load-images=false']}
-META_JSON = ENV["HOME"]+'/othercontent/meta/meta.json'
+META_PATH = ENV["HOME"]+'/othercontent/meta/'
+
+if TEST
+	META_JSON = META_PATH + 'meta_test.json'
+else
+	META_JSON = META_PATH + 'meta.json'
+end
+
 
 site_data = JSON.parse(IO.read(META_JSON))
 
 begin
-	storage = Store::MongoStore.new(MONGO_CONF[:host], MONGO_CONF[:port], MONGO_CONF[:database], MONGO_CONF[:collection])
+	if TEST
+		puts "Not opening storage because this is only a test"
+	else
+		storage = Store::MongoStore.new(MONGO_CONF[:host], MONGO_CONF[:port], MONGO_CONF[:database], MONGO_CONF[:collection])
+	end
 rescue => error
 	puts "OTHERCONTENT-ERROR: Something wrong happened when connecting to db store: #{error}"
 end
@@ -226,7 +244,11 @@ site_data.each do |e|
 				begin
 					#TODO: eventually don't save repeats, but right now we want to see everything
 					#TODO: eventually save frequency of saved items (if repeats?) - maybe put this downstream
-					storage.insertdoc(cdoc)
+					if TEST
+						puts cdoc
+					else
+						storage.insertdoc(cdoc)
+					end
 				rescue => error
 					puts "OTHERCONTENT-ERROR: Something wrong happened when storing in db store: #{error}"
 				end

@@ -9,8 +9,13 @@ paid, recommended content
 require 'csv'
 require 'json'
 
-META_CSV  = './meta/pilot_sites.csv'
-META_JSON = './meta/meta.json'
+if ARGV[0] == 'test'
+	META_CSV  = './meta/pilot_sites_test.csv'
+	META_JSON = './meta/meta_test.json'
+else
+	META_CSV  = './meta/pilot_sites.csv'
+	META_JSON = './meta/meta.json'
+end
 
 #helpers up here
 

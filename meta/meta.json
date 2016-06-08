@@ -179,5 +179,24 @@
     "img": [
       "div.rc-photo !style"
     ]
+  },
+  {
+    "site": "http://www.infowars.com/",
+    "provider": [
+      "revcontent"
+    ],
+    "a_path": "section.featured-stories div.article-content h3 a",
+    "c_path": [
+      "div.rc-row div.rc-item div.rc-item-wrapper"
+    ],
+    "hl": [
+      "a.rc-cta !title"
+    ],
+    "link": [
+      "a.rc-cta !href"
+    ],
+    "img": [
+      "div.rc-photo !style"
+    ]
   }
 ]
