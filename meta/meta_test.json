@@ -1,21 +1,21 @@
 [
   {
-    "site": "http://www.infowars.com/",
+    "site": "http://www.salon.com",
     "provider": [
-      "revcontent"
+      "taboola"
     ],
-    "a_path": "section.featured-stories div.article-content h3 a",
+    "a_path": "div.smr-widget li.smr-post a",
     "c_path": [
-      "div.rc-row div.rc-item div.rc-item-wrapper"
+      "div.trc_rbox_container div[data-item-syndicated=\"true\"]"
     ],
     "hl": [
-      "a.rc-cta !title"
+      "a.item-label-href !title"
     ],
     "link": [
-      "a.rc-cta !href"
+      "a.item-label-href !href"
     ],
     "img": [
-      "div.rc-photo !style"
+      "!data-item-thumb"
     ]
   }
 ]

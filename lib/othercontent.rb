@@ -32,6 +32,7 @@ META_PATH = ENV["HOME"]+'/othercontent/meta/'
 
 if TEST
 	META_JSON = META_PATH + 'meta_test.json'
+	BROPTIONS[:debug]=true
 else
 	META_JSON = META_PATH + 'meta.json'
 end
@@ -222,12 +223,21 @@ site_data.each do |e|
 		session.visit a
 		a_doc = Nokogiri::HTML(session.html)
 		res.each do |item|
+			if TEST
+				puts "Fetching: #{a}"
+			end
 			cpath = item[:path]
 			headline = item[:hl]
 			link = item[:link]
 			img = item[:img]
 			content = a_doc.css(cpath)
+			if TEST
+				puts "GETTING: #{cpath}"
+			end
 			content.each do |c|
+				if TEST
+					puts "getting content for: #{c}"
+				end
 				curr_location = a
 				curr_link = get_val(c, link)
 				curr_hl = get_val(c, headline)
@@ -245,7 +255,7 @@ site_data.each do |e|
 					#TODO: eventually don't save repeats, but right now we want to see everything
 					#TODO: eventually save frequency of saved items (if repeats?) - maybe put this downstream
 					if TEST
-						puts cdoc
+						puts "Returning: #{cdoc}"
 					else
 						storage.insertdoc(cdoc)
 					end
