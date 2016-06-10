@@ -28,6 +28,7 @@ end
 
 
 BROPTIONS = {:js_errors => false, :timeout => 120, :phantomjs_options => ['--ignore-ssl-errors=false', '--load-images=false']}
+USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1"
 META_PATH = ENV["HOME"]+'/othercontent/meta/'
 
 if TEST
@@ -211,6 +212,7 @@ end
 
 site_data.each do |e|
 	session = Capybara::Session.new(:poltergeist)
+	session.driver.headers = {"User-Agent" => USER_AGENT}
 	start = e['site']
 	article_path = e['a_path']
 	res = path_order e #reach into each meta entry and sort out the arrayed paths

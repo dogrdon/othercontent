@@ -198,5 +198,43 @@
     "img": [
       "div.rc-photo !style"
     ]
+  },
+  {
+    "site": "http://www.salon.com/",
+    "provider": [
+      "taboola"
+    ],
+    "a_path": "div.smr-widget li.smr-post a",
+    "c_path": [
+      "div.trc_rbox_container div[data-item-syndicated=\"true\"]"
+    ],
+    "hl": [
+      "a.item-label-href !title"
+    ],
+    "link": [
+      "a.item-label-href !href"
+    ],
+    "img": [
+      "!data-item-thumb"
+    ]
+  },
+  {
+    "site": "http://www.slate.com",
+    "provider": [
+      "outbrain"
+    ],
+    "a_path": "section.the-full-slate div.item a",
+    "c_path": [
+      "ul.ob-widget-items-container li a"
+    ],
+    "hl": [
+      "span.ob-rec-text !title"
+    ],
+    "link": [
+      "!href"
+    ],
+    "img": [
+      "img.ob-rec-image !src"
+    ]
   }
 ]
