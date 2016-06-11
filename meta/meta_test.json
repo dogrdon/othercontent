@@ -1,10 +1,10 @@
 [
   {
-    "site": "http://www.salon.com",
+    "site": "http://www.huffingtonpost.com/",
     "provider": [
       "taboola"
     ],
-    "a_path": "div.smr-widget li.smr-post a",
+    "a_path": "div#center_entries_container div.entry h2 a",
     "c_path": [
       "div.trc_rbox_container div[data-item-syndicated=\"true\"]"
     ],

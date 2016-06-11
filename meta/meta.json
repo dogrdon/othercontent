@@ -236,5 +236,24 @@
     "img": [
       "img.ob-rec-image !src"
     ]
+  },
+  {
+    "site": "http://www.huffingtonpost.com/",
+    "provider": [
+      "taboola"
+    ],
+    "a_path": "div#center_entries_container div.entry h2 a",
+    "c_path": [
+      "div.trc_rbox_container div[data-item-syndicated=\"true\"]"
+    ],
+    "hl": [
+      "a.item-label-href !title"
+    ],
+    "link": [
+      "a.item-label-href !href"
+    ],
+    "img": [
+      "!data-item-thumb"
+    ]
   }
 ]
