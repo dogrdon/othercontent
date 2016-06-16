@@ -15,6 +15,7 @@ require 'mongo'
 require 'json'
 require 'cgi'
 require 'net/http'
+require 'phantomjs'
 
 ##
 # CONFIGURATION AND SET UP
@@ -27,7 +28,7 @@ else
 end
 
 
-BROPTIONS = {:js_errors => false, :timeout => 120, :phantomjs_options => ['--ignore-ssl-errors=false', '--load-images=false']}
+BROPTIONS = {:phantomjs => Phantomjs.path, :js_errors => false, :timeout => 120, :phantomjs_options => ['--ignore-ssl-errors=false', '--load-images=false']}
 USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1"
 META_PATH = ENV["HOME"]+'/othercontent/meta/'
 
