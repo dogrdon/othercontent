@@ -62,54 +62,12 @@
     ]
   },
   {
-    "site": "http://examiner.com",
-    "provider": [
-      "taboola"
-    ],
-    "a_path": "div#ex_taxonomy--ex_taxonomy_popular_articles_global ul li a",
-    "c_path": [
-      "div.trc_rbox_container div[data-item-syndicated=\"true\"]",
-      "div.subzone div.nb div.ad"
-    ],
-    "hl": [
-      "a.item-label-href !title",
-      "div.text a %text"
-    ],
-    "link": [
-      "a.item-label-href !href",
-      "div.text a !href"
-    ],
-    "img": [
-      "!data-item-thumb",
-      "div.image a img !src"
-    ]
-  },
-  {
     "site": "http://nbcnews.com",
     "provider": [
       "taboola",
       "adblade"
     ],
     "a_path": "section#top-stories-section div.dycontent div.story-link_default a",
-    "c_path": [
-      "div.trc_rbox_container div[data-item-syndicated=\"true\"]"
-    ],
-    "hl": [
-      "a.item-label-href !title"
-    ],
-    "link": [
-      "a.item-label-href !href"
-    ],
-    "img": [
-      "!data-item-thumb"
-    ]
-  },
-  {
-    "site": "http://theblaze.com",
-    "provider": [
-      "taboola"
-    ],
-    "a_path": "ul#tblz_ps_tab_popular a.tblz_ps_title",
     "c_path": [
       "div.trc_rbox_container div[data-item-syndicated=\"true\"]"
     ],

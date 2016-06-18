@@ -1,21 +1,21 @@
 [
   {
-    "site": "http://www.huffingtonpost.com/",
+    "site": "http://www.slate.com",
     "provider": [
-      "taboola"
+      "outbrain"
     ],
-    "a_path": "div#center_entries_container div.entry h2 a",
+    "a_path": "section.the-full-slate div.item a",
     "c_path": [
-      "div.trc_rbox_container div[data-item-syndicated=\"true\"]"
+      "ul.ob-widget-items-container li a"
     ],
     "hl": [
-      "a.item-label-href !title"
+      "span.ob-rec-text !title"
     ],
     "link": [
-      "a.item-label-href !href"
+      "!href"
     ],
     "img": [
-      "!data-item-thumb"
+      "img.ob-rec-image !src"
     ]
   }
 ]
