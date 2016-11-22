@@ -221,7 +221,7 @@ site_data.each do |e|
 	session.visit start
 	
 	doc = Nokogiri::HTML(session.html)
-	articles = ensure_domain(start, doc.css(article_path).map{ |l| l['href'] }[0..3]) # this range can be inc, or low, for desired effect
+	articles = ensure_domain(start, doc.css(article_path).map{ |l| l['href'] }[0..1]) # this range can be inc, or low, for desired effect
 	articles.each do |a|
 		session.visit a
 		a_doc = Nokogiri::HTML(session.html)
@@ -260,7 +260,9 @@ site_data.each do |e|
 					if TEST
 						puts "Returning: #{cdoc}"
 					else
-						storage.insertdoc(cdoc)
+						if !storage.checkrecord('content_link', cdoc[:content_link])
+							storage.insertdoc(cdoc)
+						end
 					end
 				rescue => error
 					puts "OTHERCONTENT-ERROR: Something wrong happened when storing in db store: #{error}"

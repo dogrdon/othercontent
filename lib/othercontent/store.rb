@@ -20,8 +20,8 @@ module Store
       @mongo_client[@coll].insert_one(doc)
     end
 
-    def checkrecord(rec_id)
-      res = @mongo_client[@coll].find(:_id=>rec_id).entries.length > 0
+    def checkrecord(rec_key, rec_val)
+      res = @mongo_client[@coll].find(rec_key.to_sym=>rec_val).entries.length > 0
       return res
     end
   end
